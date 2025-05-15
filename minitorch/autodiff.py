@@ -48,9 +48,6 @@ class Variable(Protocol):
         """
         pass
 
-    def __hash__(self):
-        return self.unique_id
-
     def is_leaf(self) -> bool:
         """
         Returns whether this Variable is a leaf node in the computation graph.
