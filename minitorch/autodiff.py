@@ -112,8 +112,9 @@ def topological_sort(variable: Variable) -> Iterable[Variable]:
                     visited.add(parent)
 
     for node in visited:
-        for parent in node.parents:
-            children_count[parent] += 1
+        if not node.is_constant():
+            for parent in node.parents:
+                children_count[parent] += 1
 
     topo_order = []
     queue = [variable]
