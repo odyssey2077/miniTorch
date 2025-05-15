@@ -184,7 +184,6 @@ class Tensor:
     def __neg__(self) -> Tensor:
         return Neg.apply(self)
 
-
     def __hash__(self):
         return self.unique_id    
 

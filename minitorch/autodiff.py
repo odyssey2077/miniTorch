@@ -105,10 +105,11 @@ def topological_sort(variable: Variable) -> Iterable[Variable]:
     current_nodes = [variable]
     while current_nodes:
         next_node = current_nodes.pop()
-        for parent in next_node.parents:
-            if parent not in visited:
-                current_nodes.append(parent)
-                visited.add(parent)
+        if not next_node.is_constant():
+            for parent in next_node.parents:
+                if parent not in visited:
+                    current_nodes.append(parent)
+                    visited.add(parent)
 
     for node in visited:
         for parent in node.parents:
