@@ -105,14 +105,14 @@ def topological_sort(variable: Variable) -> Iterable[Variable]:
     current_nodes = [variable]
     while current_nodes:
         next_node = current_nodes.pop()
-        if not next_node.is_constant():
+        if next_node.is_leaf():
             for parent in next_node.parents:
                 if parent not in visited:
                     current_nodes.append(parent)
                     visited.add(parent)
 
     for node in visited:
-        if not node.is_constant():
+        if  node.is_leaf():
             for parent in node.parents:
                 children_count[parent] += 1
 
