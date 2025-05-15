@@ -122,10 +122,10 @@ def topological_sort(variable: Variable) -> Iterable[Variable]:
         node = queue.pop()
         if not node.is_constant():
             topo_order.append(node)
-        for parent in node.parents:
-            children_count[parent] -= 1
-            if children_count[parent] == 0:
-                queue.append(parent)
+            for parent in node.parents:
+                children_count[parent] -= 1
+                if children_count[parent] == 0:
+                    queue.append(parent)
     return topo_order
 
 
