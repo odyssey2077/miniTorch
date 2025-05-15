@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from typing import Any, Iterable, List, Tuple
-
+from collections import defaultdict
 from typing_extensions import Protocol
 
 
@@ -47,6 +47,9 @@ class Variable(Protocol):
             int: The unique identifier of this Variable.
         """
         pass
+
+    def __hash__(self):
+        return self.unique_id
 
     def is_leaf(self) -> bool:
         """
@@ -100,11 +103,30 @@ def topological_sort(variable: Variable) -> Iterable[Variable]:
     Returns:
         Non-constant Variables in topological order starting from the right.
     """
-    # BEGIN ASSIGN1_1
-    # TODO
-    
-    raise NotImplementedError("Task Autodiff Not Implemented Yet")
-    # END ASSIGN1_1
+    children_count = defaultdict(lambda: 0)
+    visited = set([variable])
+    current_nodes = [variable]
+    while current_nodes:
+        next_node = current_nodes.pop()
+        for parent in next_node.parents:
+            if parent not in visited:
+                current_nodes.append(parent)
+                visited.add(next_node)
+
+    for node in visited:
+        for parent in node.parents:
+            children_count[parent] += 1
+    topo_order = []
+    queue = [variable]
+    while queue:
+        node = queue.pop()
+        if not node.is_constant():
+            topo_order.append(node)
+        for parent in node.parents:
+            children_count[parent] -= 1
+            if children_count[parent] == 0:
+                queue.append(parent)
+    return topo_order
 
 
 def backpropagate(variable: Variable, deriv: Any) -> None:
@@ -119,9 +141,10 @@ def backpropagate(variable: Variable, deriv: Any) -> None:
     No return. Should write to its results to the derivative values of each leaf through `accumulate_derivative`.
     """
     # BEGIN ASSIGN1_1
-    # TODO
-   
-    raise NotImplementedError("Task Autodiff Not Implemented Yet")
+    topo_order = topological_sort(variable)
+    for node in topo_order:
+        for v, d in node.chain_rule(deriv):
+            v.accumulate_derivative(d)
     # END ASSIGN1_1
 
 
