@@ -141,10 +141,13 @@ def backpropagate(variable: Variable, deriv: Any) -> None:
     No return. Should write to its results to the derivative values of each leaf through `accumulate_derivative`.
     """
     # BEGIN ASSIGN1_1
-    topo_order = topological_sort(variable)
-    for node in topo_order:
-        for v, d in node.chain_rule(deriv):
-            v.accumulate_derivative(d)
+    if variable.is_leaf():
+        variable.accumulate_derivative(deriv)
+        return 
+    elif variable.is_constant():
+        return
+    for v, d in variable.chain_rule(deriv):
+        backpropagate(v, d)
     # END ASSIGN1_1
 
 
