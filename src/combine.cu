@@ -226,8 +226,8 @@ __global__ void MatrixMultiplyKernel(
     // In each block, we will compute a batch of the output matrix
     // All the threads in the block will work together to compute this batch
     int batch = blockIdx.z;
-    int a_batch_stride = a_shape[0] > 1 ? a_strides[0] : 0;
-    int b_batch_stride = b_shape[0] > 1 ? b_strides[0] : 0;
+    // int a_batch_stride = a_shape[0] > 1 ? a_strides[0] : 0;
+    // int b_batch_stride = b_shape[0] > 1 ? b_strides[0] : 0;
 
 
     /// BEGIN ASSIGN1_2
@@ -240,7 +240,6 @@ __global__ void MatrixMultiplyKernel(
     // 5. Compute the output tile for this thread block
     // 6. Synchronize to make sure all threads are done computing the output tile for (row, col)
     // 7. Write the output to global memory
-    int batch_size = out_shape[0];
     int m = out_shape[1];
     int n = a_shape[2];
     int p = b_shape[2];
