@@ -247,7 +247,7 @@ class CudaKernelOps(TensorOps):
             ctypes.c_int                                                              # out_shape[2], p
         ]
 
-        # Define the return type for the tensorZip function
+        # Define the return type for the MatrixMultiply function
         lib.MatrixMultiply.restype = None
 
         assert len(out._tensor._shape) == 3, f"{len(out._tensor._shape)}"
