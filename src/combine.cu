@@ -249,10 +249,7 @@ __global__ void MatrixMultiplyKernel(
     int local_col = threadIdx.y;
     float accumlate_value = 0.0f;
     for (int i = 0; i < (n+TILE-1)/TILE; ++i) {
-      int* a_index = new int[3];
-      a_index[0] = batch;
-      a_index[1] = global_row;
-      a_index[2] = i * TILE + local_col;
+      int a_index[3] = {batch, global_row, i * TILE + local_col};
       if (a_index[1] < m && a_index[2] < n) {
         int a_pos = index_to_position(a_index, a_strides, 3);
         a_shared[local_row][local_col] = a_storage[a_pos];
@@ -260,10 +257,7 @@ __global__ void MatrixMultiplyKernel(
         a_shared[local_row][local_col] = 0.0;
       }
 
-      int* b_index = new int[3];
-      b_index[0] = batch;
-      b_index[1] = i * TILE + local_row;
-      b_index[2] = global_col;
+      int b_index[3] = {batch, i * TILE + local_row, global_col};
       if (b_index[1] < n && b_index[2] < p) {
         int b_pos = index_to_position(b_index, b_strides, 3);
         b_shared[local_row][local_col] = b_storage[b_pos];
@@ -277,10 +271,7 @@ __global__ void MatrixMultiplyKernel(
       __syncthreads();
     }
     if (global_row < m && global_col < p) {
-      int* out_index = new int[3];
-      out_index[0] = batch;
-      out_index[1] = global_row;
-      out_index[2] = global_col;
+      int out_index[3] = {batch, global_row, global_col};
       int out_pos = index_to_position(out_index, out_strides, 3);
       out[out_pos] = accumlate_value;
     }
