@@ -140,7 +140,6 @@ def backpropagate(variable: Variable, deriv: Any) -> None:
 
     No return. Should write to its results to the derivative values of each leaf through `accumulate_derivative`.
     """
-    # BEGIN ASSIGN1_1
     if variable.is_leaf():
         variable.accumulate_derivative(deriv)
         return 
@@ -148,7 +147,6 @@ def backpropagate(variable: Variable, deriv: Any) -> None:
         return
     for v, d in variable.chain_rule(deriv):
         backpropagate(v, d)
-    # END ASSIGN1_1
 
 
 @dataclass
