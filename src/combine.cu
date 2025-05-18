@@ -278,6 +278,10 @@ __global__ void MatrixMultiplyKernel(
       __syncthreads();
     }
     if (global_row < m && global_col < p) {
+      int* out_index = new int[3];
+      out_index[0] = batch;
+      out_index[1] = global_row;
+      out_index[2] = global_col;
       int out_pos = index_to_position(out_index, out_strides, 3);
       out[out_pos] = accumlate_value;
     }
