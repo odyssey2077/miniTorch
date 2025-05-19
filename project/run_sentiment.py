@@ -35,12 +35,12 @@ class Linear(minitorch.Module):
         # HINT: make sure to use the RParam function
         self.weights = RParam(in_size, out_size)
         self.bias = RParam(out_size)
+        self.in_size = in_size
         self.out_size = out_size
         # END ASSIGN1_3
 
     def forward(self, x):
         
-        batch, in_size = x.shape
         
         # BEGIN ASSIGN1_3
         # TODO
@@ -49,10 +49,11 @@ class Linear(minitorch.Module):
         # 3. Apply Matrix Multiplication on input x and self.weights, and reshape the output to be of size (batch, self.out_size)
         # 4. Add self.bias
         # HINT: You can use the view function of minitorch.tensor for reshape
-        x = x.view(batch, in_size)
-        weights = self.weights.view(in_size, self.out_size)
+        batch_size = x.size() / self.in_size
+        x = x.view(batch_size, self.in_size)
+        weights = self.weights.view(self.in_size, self.out_size)
         out = x @ weights
-        out = out.view(batch, self.out_size)
+        out = out.view(batch_size, self.out_size)
         out = out + self.bias
         return out
         # END ASSIGN1_3
