@@ -209,7 +209,7 @@ class SentenceSentimentTrain:
                 x.requires_grad_(False)
                 y.requires_grad_(False)
                 out = model(x)
-                loss = -y * out.log() - (1 - y) * (1 - out).log()
+                loss = -y * out.log() - (-y + 1) * (-out + 1).log()
                 loss = loss.mean()
                 loss.backward()
                 optim.step()
