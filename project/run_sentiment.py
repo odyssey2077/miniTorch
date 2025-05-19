@@ -206,8 +206,8 @@ class SentenceSentimentTrain:
                 # 6. Use Optimizer to take a gradient step
                 x = minitorch.tensor(X_train[batch_num:batch_num+batch_size], backend=BACKEND)
                 y = minitorch.tensor(y_train[batch_num:batch_num+batch_size], backend=BACKEND)
-                x.requires_grad = False
-                y.requires_grad = False
+                x.requires_grad_(False)
+                y.requires_grad_(False)
                 out = model(x)
                 loss = -y * out.log() - (1 - y) * (1 - out).log()
                 loss = loss.mean()
